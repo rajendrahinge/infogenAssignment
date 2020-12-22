@@ -42,7 +42,7 @@ class TaskSearch extends Task
     public function search($params)
     {
         $query = Task::find();
-        $count = $query->count();
+        // $count = $query->count();
 
         // add conditions that should always apply here
 
@@ -67,11 +67,13 @@ class TaskSearch extends Task
             'created_time' => $this->created_time,
         ]);
 
-        $pagination = new Pagination(['totalCount' => $count]);
+        // $pagination = new Pagination(['totalCount' => $count]);
 
-        $query->andFilterWhere(['like', 'work_details', $this->work_details])
+        $query->andFilterWhere(['like', 'work_details', $this->work_details]);
+
+        /*
         ->offset($pagination->offset)
-        ->limit($pagination->limit);
+        ->limit($pagination->limit)*/
 
         return $dataProvider;
     }

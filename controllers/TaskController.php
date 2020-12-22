@@ -8,7 +8,7 @@ use app\models\TaskSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\data\Pagination;
+// use yii\data\Pagination;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -37,7 +37,7 @@ class TaskController extends Controller
     public function actionIndex()
     {
         $searchModel = new TaskSearch();
-        echo '<pre>';print_r($searchModel);echo '</pre>';exit;
+        // echo '<pre>';print_r($searchModel);echo '</pre>';exit;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
