@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Task;
+use yii\data\Pagination;
 
 /**
  * TaskSearch represents the model behind the search form of `app\models\Task`.
@@ -41,6 +42,7 @@ class TaskSearch extends Task
     public function search($params)
     {
         $query = Task::find();
+        $count = $query->count();
 
         // add conditions that should always apply here
 
@@ -65,7 +67,11 @@ class TaskSearch extends Task
             'created_time' => $this->created_time,
         ]);
 
-        $query->andFilterWhere(['like', 'work_details', $this->work_details]);
+        $pagination = new Pagination(['totalCount' => $count]);
+
+        $query->andFilterWhere(['like', 'work_details', $this->work_details])
+        ->offset($pagination->offset)
+        ->limit($pagination->limit);
 
         return $dataProvider;
     }
