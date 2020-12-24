@@ -28,29 +28,37 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            
             [
-            'attribute' => 'team_id',
-            'filter' => ArrayHelper::map(Teams::find()->where(["designation" => 0])->asArray()->all(), 'id', 'name'),
-            'value' => function($model) {
+                'header' => 'Sr.No',
+                'class' => 'yii\grid\SerialColumn'
+            ],
+            [
+                'header' => 'Team Member Name',
+                'attribute' => 'team_id',
+                'filter' => ArrayHelper::map(Teams::find()->where(["designation" => 0])->asArray()->all(), 'id', 'name'),
+                'value' => function($model) {
                 $currentMemberName = ArrayHelper::map(Teams::find()->where(["id" => $model->team_id])->asArray()->all(), 'id', 'name');
                 return $currentMemberName[$model->team_id];
-            }
-            ],[
-            'attribute' => 'project_id',
-            'filter' => ArrayHelper::map(Project::find()->where(["status" => 0])->asArray()->all(), 'id', 'project_name'),
-            'value' => function($model) {
-                $currentProjectName = ArrayHelper::map(Project::find()->where(["id" => $model->project_id])->asArray()->all(), 'id', 'project_name');
-                // return $currentProjectName[$model->project_id];
-                return empty($currentProjectName[$model->project_id]) ? '-' : $currentProjectName[$model->project_id];
             }],
-            'work_details:ntext',
-            'time_spent',
+            [
+                'header' => 'Work Details',
+                'attribute' => 'work_details'
+            ],
+            [
+                'attribute' => 'project_id',
+                'filter' => ArrayHelper::map(Project::find()->where(["status" => 0])->asArray()->all(), 'id', 'project_name'),
+                'value' => function($model) {
+                    $currentProjectName = ArrayHelper::map(Project::find()->where(["id" => $model->project_id])->asArray()->all(), 'id', 'project_name');
+                    // return $currentProjectName[$model->project_id];
+                    return empty($currentProjectName[$model->project_id]) ? '-' : $currentProjectName[$model->project_id];
+            }],
+            [
+                'header' => 'Time Spent',
+                'attribute' => 'time_spent'
+            ],
+            // 'time_spent',
             //'created_time',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

@@ -5,6 +5,8 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Teams;
+use app\models\Task;
+// use app\models\Query;
 
 /**
  * TeamsSearch represents the model behind the search form of `app\models\Teams`.
@@ -40,12 +42,20 @@ class TeamsSearch extends Teams
      */
     public function search($params)
     {
-        $query = Teams::find();
+        // $query = Teams::find();
+        $query = new \yii\db\Query();
+        $query = $query->select(['sum(task.time_spent) as no_of_times','teams.name', 'teams.email', 'teams.project_assigned', 'teams.designation'])  
+        ->from('teams')
+        ->join('INNER JOIN','task','task.team_id = teams.id')
+        ->join('INNER JOIN','project','project.id = task.project_id')
+        ->where('project.status = 1')
+        ->groupBy(['teams.id'])
+        ->orderBy(['no_of_times' => SORT_DESC]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $query
         ]);
 
         $this->load($params);

@@ -29,24 +29,35 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'project_name',
-            'team_size'
-            ,[
-            'attribute' => 'manager',
-            'filter' => ArrayHelper::map(Teams::find()->where(["designation" => 1])->asArray()->all(), 'id', 'name'),
-            'value' => function($model) {
-                return $model->managersname[0]->name;
-            }
+            [
+                'header' => 'Sr.No',
+                'class' => 'yii\grid\SerialColumn'
             ],
-            [                
-            'attribute'=>'status',
-            'filter' => ["Pending","Complete"],
-            'value' => function($model) {
-                return ($model->status == 0) ? "Pending" : "Complete";
-            }   
+            [
+                'header' => 'Project Name',
+                'attribute' => 'project_name',
+
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'header' => 'Status',            
+                'attribute'=>'status',
+                'filter' => ["Pending","Complete"],
+                'value' => function($model) {
+                    return ($model->status == 0) ? "Pending" : "Complete";
+            }],
+            [
+                'header' => 'Team Size',
+                'attribute' => 'team_size',
+
+            ],
+            [
+                'header' => 'Manager',
+                'attribute' => 'manager',
+                'filter' => ArrayHelper::map(Teams::find()->where(["designation" => 1])->asArray()->all(), 'id', 'name'),
+                'value' => function($model) {
+                    return $model->managersname[0]->name;
+            }],
+            // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

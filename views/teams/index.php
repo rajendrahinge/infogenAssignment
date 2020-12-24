@@ -25,26 +25,36 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'name',
-            'email:email',[
-            'attribute' => 'project_assigned',
-            'filter' => ArrayHelper::map(Project::find()->where(["status" => 0])->asArray()->all(), 'id', 'project_name'),
-            'value' => function($model) {
-                return empty($model->projectassigned) ? '-' : $model->projectassigned[0]->project_name;
+        'columns' => [            
+            [
+                'header' => 'Sr.No',
+                'class' => 'yii\grid\SerialColumn'
+            ],
+            [
+                'header' => 'Name',
+                'attribute' => 'name',
+            ],
+            [
+                'header' => 'email',
+                'attribute' => 'email'
+            ],
+            [
+                'header' => 'Project Assigned',
+                'attribute' => 'project_assigned',
+                'filter' => ArrayHelper::map(Project::find()->where(["status" => 0])->asArray()->all(), 'id', 'project_name'),
+                'value' => function($model) {
+                    $currentProjectName = ArrayHelper::map(Project::find()->where(["id" => $model['project_assigned']])->asArray()->all(), 'id', 'project_name');
+                    // return empty($model->projectassigned) ? '-' : $model->projectassigned[0]->project_name;
+                    return empty($currentProjectName[$model['project_assigned']]) ? '-' : $currentProjectName[$model['project_assigned']];
             }],
-            [                
-            'attribute'=>'designation',
-            'filter' => ["Manager","Employee"],
-            'value' => function($model) {
-                return ($model->designation == 0) ? "Employee" : "Manager";
+            [
+                'header' => 'Designation',                
+                'attribute'=>'designation',
+                'filter' => ["Manager","Employee"],
+                'value' => function($model) {
+                    return ($model['designation'] == 0) ? "Employee" : "Manager";
             }],
-            // 'designation',
-            //'created_time',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

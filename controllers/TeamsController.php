@@ -37,6 +37,7 @@ class TeamsController extends Controller
     {
         $searchModel = new TeamsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // $dataProvider->setPagination(['pageSize'=>5]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
